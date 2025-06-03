@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -189,7 +189,7 @@ public class ProductControllerTest {
 
     @Test
     public void testGetProductsByCategoryPaginated_Success() throws Exception {
-        Page<Product> productPage = new PageImpl<>(Arrays.asList(testProduct));
+        Page<Product> productPage = new PageImpl<>(Arrays.asList(testProduct), PageRequest.of(0, 5), 1);
         when(productService.getProductsByCategoryPaginated(eq("Electronics"), any())).thenReturn(productPage);
 
         mockMvc.perform(get("/products/category/Electronics/paginated")

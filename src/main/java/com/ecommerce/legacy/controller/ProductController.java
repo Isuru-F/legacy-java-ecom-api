@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +88,7 @@ public class ProductController {
     }
 
     @GetMapping("/category/{category}/paginated")
-    public ResponseEntity<Page<Product>> getProductsByCategoryPaginated(
+    public ResponseEntity<?> getProductsByCategoryPaginated(
             @PathVariable String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
