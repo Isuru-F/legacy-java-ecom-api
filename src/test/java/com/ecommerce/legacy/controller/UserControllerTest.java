@@ -3,6 +3,7 @@ package com.ecommerce.legacy.controller;
 import com.ecommerce.legacy.model.User;
 import com.ecommerce.legacy.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,7 @@ public class UserControllerTest {
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         
         testUser = new User();
         testUser.setId(1L);
@@ -101,15 +103,33 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.error").value("User not found"));
     }
 
+
     @Test
-    public void testGetUserByUsername_Success() throws Exception {
-        when(userService.getUserByUsername(anyString())).thenReturn(testUser);
+    public void getUserByUserId_Success() throws Exception {
+        when(userService.getUserById(anyLong())).thenReturn(testUser);
 
-        mockMvc.perform(get("/users/username/testuser"))
+        mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.username").value("testuser"));
+    }
 
-        verify(userService, times(1)).getUserByUsername("testuser");
+    @Test
+    public void getUserByUserId_NotFound() throws Exception {
+        when(userService.getUserById(anyLong()))
+                .thenThrow(new EntityNotFoundException("User not found"));
+        
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getNewUserByEmail_Success() throws Exception {
+        when(userService.getUserByEmail(anyString())).thenReturn(testUser);
+        
+        mockMvc.perform(get("/users/email/test@example.com"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("test@example.com"));
     }
 
     @Test
@@ -130,6 +150,7 @@ public class UserControllerTest {
         updatedUser.setId(1L);
         updatedUser.setUsername("updateduser");
         updatedUser.setEmail("updated@example.com");
+        updatedUser.setPassword("password123");
         updatedUser.setFirstName("Updated");
         updatedUser.setLastName("User");
 
