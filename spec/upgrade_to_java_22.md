@@ -200,6 +200,15 @@ Breaking Changes: None
 API Compatibility: Maintained
 ```
 
+### Git Commands After Commit:
+```bash
+# Push the coverage enhancement commit
+git push origin java-22-multiversion-upgrade
+
+# Verify push successful
+git log --oneline -1
+```
+
 ---
 
 ## Phase 1: Pre-Migration Setup and Baseline Testing
@@ -291,6 +300,16 @@ Performance Baselines:
 
 Breaking Changes: None
 API Compatibility: Fully validated and baselined
+```
+
+### Git Commands After Commit:
+```bash
+# Push the baseline testing framework commit
+git push origin java-22-multiversion-upgrade
+
+# Verify push successful and check branch status
+git log --oneline -1
+git status
 ```
 
 ---
@@ -438,6 +457,16 @@ Breaking Changes: None
 API Compatibility: Maintained - all client contracts preserved
 ```
 
+### Git Commands After Commit:
+```bash
+# Push the Java 17 upgrade commit
+git push origin java-22-multiversion-upgrade
+
+# Verify push successful and check commit history
+git log --oneline -3
+git branch -v
+```
+
 ---
 
 ## Phase 3: Java 17 → Java 21 (LTS)
@@ -558,6 +587,16 @@ Validation Results:
 Breaking Changes: None
 API Compatibility: Maintained - all client contracts preserved
 Performance Impact: [Improved/Maintained] - [specific metrics]
+```
+
+### Git Commands After Commit:
+```bash
+# Push the Java 21 upgrade commit
+git push origin java-22-multiversion-upgrade
+
+# Verify push successful and check upgrade progress
+git log --oneline -4
+git show --stat HEAD
 ```
 
 ---
@@ -683,6 +722,17 @@ Breaking Changes: None
 API Compatibility: Fully maintained throughout entire upgrade
 Performance Impact: [X]% improvement from Java 11 baseline
 Production Readiness: ✅ Validated and deployed successfully
+```
+
+### Git Commands After Commit:
+```bash
+# Push the final Java 22 upgrade commit
+git push origin java-22-multiversion-upgrade
+
+# Verify complete upgrade history
+git log --oneline -5
+git show --stat HEAD
+echo "✅ Java 22 upgrade completed and pushed successfully"
 ```
 
 ---
@@ -828,12 +878,22 @@ Before declaring upgrade complete:
 ### PR Creation Requirements
 After successful completion of all phases, create a comprehensive pull request:
 
-**Command to execute:**
+**Commands to execute:**
 ```bash
+# Ensure all commits are pushed before creating PR
+git push origin java-22-multiversion-upgrade
+
+# Verify all phase commits are present
+git log --oneline --grep="feat(" | head -5
+
+# Create comprehensive pull request
 gh pr create --title "feat: Complete Java 11 to Java 22 upgrade with full API compatibility" \
   --body-file pr_summary.md \
   --reviewer [team-members] \
   --label "enhancement,java-upgrade,breaking-change-free"
+
+# Verify PR creation successful
+gh pr view --json number,title,state
 ```
 
 ### PR Summary Template (pr_summary.md)
@@ -974,9 +1034,15 @@ Before creating the PR:
 ### Progress Update Instructions
 **Upon PR creation:**
 1. Mark the entire upgrade project as `[COMPLETED]` in this spec
-2. Archive the progress.md file with final status
+2. Archive the progress.md file with final status  
 3. Update AGENT.md with final Java 22 commands and lessons learned
 4. Document this process for future major upgrades
+5. **Push final documentation updates:**
+   ```bash
+   git add AGENT.md progress.md spec/upgrade_to_java_22.md
+   git commit -m "docs: finalize Java 22 upgrade documentation and process"
+   git push origin java-22-multiversion-upgrade
+   ```
 
 ---
 
