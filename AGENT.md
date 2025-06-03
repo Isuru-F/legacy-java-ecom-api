@@ -8,7 +8,7 @@
 - Single test method: `mvn test -Dtest=UserServiceTest#testCreateUser_Success`
 
 ## Tech Stack
-- Java 11, Spring Boot 2.7.18, Spring Data JPA, H2 database, Maven, JUnit 4
+- Java 22, Spring Boot 3.2.12, Spring Data JPA, H2 database, Maven, JUnit 4
 
 ## Code Style
 - Traditional layered architecture: Controller → Service → Repository → Model

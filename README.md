@@ -117,7 +117,7 @@ src/
 ## Getting Started
 
 ### Prerequisites
-- Java 11 or higher
+- Java 22 or higher
 - Maven 3.6+
 
 ### Running the Application
