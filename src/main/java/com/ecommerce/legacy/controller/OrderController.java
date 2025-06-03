@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -88,8 +88,20 @@ public class OrderController {
             @RequestParam(defaultValue = "10") int size) {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            Page<Order> orders = orderService.getOrdersByUserPaginated(userId, pageable);
-            return ResponseEntity.ok(orders);
+            Page<Order> ordersPage = orderService.getOrdersByUserPaginated(userId, pageable);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("content", ordersPage.getContent());
+            response.put("totalElements", ordersPage.getTotalElements());
+            response.put("totalPages", ordersPage.getTotalPages());
+            response.put("number", ordersPage.getNumber());
+            response.put("size", ordersPage.getSize());
+            response.put("numberOfElements", ordersPage.getNumberOfElements());
+            response.put("first", ordersPage.isFirst());
+            response.put("last", ordersPage.isLast());
+            response.put("empty", ordersPage.isEmpty());
+            
+            return ResponseEntity.ok(response);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(createErrorResponse(e.getMessage()));
         }
